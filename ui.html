@@ -46,42 +46,44 @@
 
   window.onmessage = async (event) => {
    data_number =  event.data.pluginMessage.number;
+   if(data_type !== '' && data_type !== null ) getData();
   }
 
 
   document.getElementById('names').onclick = () => {
     data_type = "names";
-    getData();
+    getSelected();
   }
 
   document.getElementById('phones').onclick = () => {
     data_type = "phones";
-    getData();
+    getSelected();
   }
 
   document.getElementById('emails').onclick = () => {
     data_type = "emails";
-    getData();
+    getSelected();
   }
 
   document.getElementById('images').onclick = () => {
     data_type = "images";
-    getData();
+    getSelected();
   }
 
-  document.getElementById('cancel').onclick = () => {
-  parent.postMessage({ pluginMessage: { type: 'cancel' } }, '*')
-}
+
+  function getSelected(){
+    window.parent.postMessage({pluginMessage: '{"type" : "get-selected"}'}, '*')
+
+  }
 
   function getData(){
 
-    console.log(base_url + data_type + '/' + data_number);
     var request = new XMLHttpRequest()
     // This link has random lorem ipsum text
     request.open('GET', base_url + data_type + '/' + data_number  )
     request.responseType = 'text'
     request.onload = () => {
-      console.log(request.response);
+
       window.parent.postMessage({pluginMessage: request.response}, '*')
     };
     request.send()

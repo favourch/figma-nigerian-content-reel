@@ -16,17 +16,27 @@ figma.ui.onmessage = msg => {
     // One way of distinguishing between different types of messages sent from
     // your HTML page is to use an object with a "type" property like this.
     msg = JSON.parse(msg);
-    console.log(msg.type);
-    if (msg.type === 'names' || msg.type === 'phones' || msg.type === 'emails') {
-        figma.loadFontAsync({ family: "Roboto", style: "Regular" }).then(() => {
-            let count = 0;
-            figma.currentPage.selection.forEach((item) => {
-                console.log(msg.data[count]);
-                item.deleteCharacters(0, item.characters.length);
-                item.insertCharacters(0, msg.data[count]);
-                count++;
-            });
+    if (msg.type == 'get-selected') {
+        figma.ui.postMessage({
+            type: "text",
+            number: figma.currentPage.selection.length
         });
+    }
+    if (msg.type === 'names' || msg.type === 'phones' || msg.type === 'emails') {
+        for (let i = 0; i < figma.currentPage.selection.length; i++) {
+            let item = figma.currentPage.selection[i];
+            figma.loadFontAsync(item.fontName).then(() => {
+                try {
+                    // @ts-ignore
+                    item.deleteCharacters(0, item.characters.length);
+                    // @ts-ignore
+                    item.insertCharacters(0, msg.data[i]);
+                }
+                catch (e) {
+                    // console.log(e);
+                }
+            });
+        }
     }
     // Make sure to close the plugin when you're done. Otherwise the plugin will
     // keep running, which shows the cancel button at the bottom of the screen.
