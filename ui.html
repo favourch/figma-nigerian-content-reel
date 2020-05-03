@@ -1,0 +1,95 @@
+
+
+<h2>Nigerian Content Reel</h2>
+<hr>
+<table>
+  <tr>
+    <th>Text</th>
+  </tr>
+  <tr>
+    <td>
+      Names
+    </td>
+    <td>
+      <button id="names">Choose</button>
+    </td>
+  </tr>
+  <tr>
+    <td >
+      Phones
+    </td>
+    <td>
+      <button id="phones">Choose</button>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Emails
+    </td>
+    <td>
+      <button id="emails">Choose</button>
+    </td>
+  <tr>
+    <td>
+      Images
+    </td>
+    <td>
+      <button id="images">Choose</button>
+    </td>
+  </tr>
+</table>
+
+<script>
+  var data_type = '';
+  var data_number = '';
+
+  window.onmessage = async (event) => {
+   data_number =  event.data.pluginMessage.number;
+    console.log( event.data.pluginMessage.number);
+
+    console.log('http://localhost:8000/api/v1/' + data_type + '/' + data_number);
+
+  }
+
+
+  document.getElementById('names').onclick = () => {
+    data_type = "names";
+    getData();
+  }
+
+  document.getElementById('phones').onclick = () => {
+    data_type = "phones";
+    getData();
+  }
+
+  document.getElementById('emails').onclick = () => {
+    data_type = "emails";
+    getData();
+  }
+
+  document.getElementById('images').onclick = () => {
+    data_type = "images";
+    getData();
+  }
+
+  document.getElementById('cancel').onclick = () => {
+  parent.postMessage({ pluginMessage: { type: 'cancel' } }, '*')
+}
+
+  function getData(){
+
+    console.log('http://localhost:8000/api/v1/' + data_type + '/' + data_number);
+    var request = new XMLHttpRequest()
+    // This link has random lorem ipsum text
+    request.open('GET', 'http://localhost:8000/api/v1/' + data_type + '/' + data_number  )
+    request.responseType = 'text'
+    request.onload = () => {
+      console.log(request.response);
+      window.parent.postMessage({pluginMessage: request.response}, '*')
+    };
+    request.send()
+
+
+  }
+
+</script>
