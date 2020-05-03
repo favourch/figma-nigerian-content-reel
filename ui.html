@@ -42,13 +42,10 @@
 <script>
   var data_type = '';
   var data_number = '';
+  var base_url = 'https://nigerian-content-api.tobyokeke.com/api/v1/';
 
   window.onmessage = async (event) => {
    data_number =  event.data.pluginMessage.number;
-    console.log( event.data.pluginMessage.number);
-
-    console.log('http://localhost:8000/api/v1/' + data_type + '/' + data_number);
-
   }
 
 
@@ -78,10 +75,10 @@
 
   function getData(){
 
-    console.log('http://localhost:8000/api/v1/' + data_type + '/' + data_number);
+    console.log(base_url + data_type + '/' + data_number);
     var request = new XMLHttpRequest()
     // This link has random lorem ipsum text
-    request.open('GET', 'http://localhost:8000/api/v1/' + data_type + '/' + data_number  )
+    request.open('GET', base_url + data_type + '/' + data_number  )
     request.responseType = 'text'
     request.onload = () => {
       console.log(request.response);
