@@ -1,2 +1,5 @@
-# figma-nigerian-content-reel
-Figma plugin that generates realistic Nigerian content
+# Figma Plugin - Nigerian Content Reel
+Figma plugin that generates realistic Nigerian content. 
+
+Uses [Nigerian Content API](https://github.com/tobyokeke/nigerian-content-api)
+
